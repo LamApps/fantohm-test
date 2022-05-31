@@ -117,7 +117,7 @@ contract Vault is Ownable, ReentrancyGuard {
 
 
     function getMostFunders() public view returns (address, address) {
-        return (topFunders[2].wallet, topFunders[1].wallet);
+        return (topFunders[0].wallet, topFunders[1].wallet);
     }
 
 }
