@@ -92,7 +92,6 @@ contract Vault is Ownable, ReentrancyGuard {
                 topFunders[2].wallet = msg.sender;
             }
         }
-        quickSort(topFunders, 0, 2);
         emit Deposit(msg.sender, token, amount);
     }
 
@@ -111,6 +110,7 @@ contract Vault is Ownable, ReentrancyGuard {
         if (msg.sender == topFunders[2].wallet) {
             topFunders[2].amount = userInfos[ids[msg.sender].sub(1)].stakingAmount;
         }
+        quickSort(topFunders, 0, 2);
 
         emit Withdraw(msg.sender, token, amount);
     }
