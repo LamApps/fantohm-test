@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/math/SafeMath.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
-
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 contract Vault is Ownable, ReentrancyGuard {
     using SafeMath for uint256;
@@ -92,6 +92,7 @@ contract Vault is Ownable, ReentrancyGuard {
                 topFunders[2].wallet = msg.sender;
             }
         }
+        IERC20(token).transferFrom(msg.sender, address(this), amount);
         emit Deposit(msg.sender, token, amount);
     }
 
@@ -111,7 +112,7 @@ contract Vault is Ownable, ReentrancyGuard {
             topFunders[2].amount = userInfos[ids[msg.sender].sub(1)].stakingAmount;
         }
         quickSort(topFunders, 0, 2);
-
+        IERC20(token).transfer(msg.sender, amount);
         emit Withdraw(msg.sender, token, amount);
     }
 

@@ -44,22 +44,22 @@ describe("Vault Test", () => {
       expect(await abcToken.balanceOf(thirdWallet.address)).to.equal(0);
       expect(await abcToken.balanceOf(fourthWallet.address)).to.equal(0);
 
-      await abcToken
+      let tx = await abcToken
         .connect(firstWallet)
         .mint(firstWallet.address, "1000000000000000000000");
-      await delay(20000);
-      await abcToken
+      await tx.wait();
+      tx = await abcToken
         .connect(secondWallet)
         .mint(secondWallet.address, "1000000000000000000000");
-      await delay(20000);
-      await abcToken
+      await tx.wait();
+      tx = await abcToken
         .connect(thirdWallet)
         .mint(thirdWallet.address, "1000000000000000000000");
-      await delay(20000);
-      await abcToken
+      await tx.wait();
+      tx = await abcToken
         .connect(fourthWallet)
         .mint(fourthWallet.address, "1000000000000000000000");
-      await delay(20000);
+      await tx.wait();
       expect(
         (await abcToken.balanceOf(firstWallet.address)).toString()
       ).to.equal("1000000000000000000000");
@@ -77,31 +77,39 @@ describe("Vault Test", () => {
 
   describe("Approve ABC Token to Vault contract", () => {
     it("Should approve ABC token to Vault Lending", async () => {
-      await abcToken
+      let tx = await abcToken
         .connect(firstWallet)
         .approve(
           vaultContract.address,
           "100000000000000000000000000000000000000000"
         );
-      await abcToken
+      await tx.wait();
+      tx = await abcToken
         .connect(secondWallet)
         .approve(
           vaultContract.address,
           "100000000000000000000000000000000000000000"
         );
-      await abcToken
+      await tx.wait();
+      tx = await abcToken
         .connect(thirdWallet)
         .approve(
           vaultContract.address,
           "100000000000000000000000000000000000000000"
         );
-      await abcToken
+      await tx.wait();
+      tx = await abcToken
         .connect(fourthWallet)
         .approve(
           vaultContract.address,
           "100000000000000000000000000000000000000000"
         );
-      await delay(20000);
+      await tx.wait();
+      const balance = await abcToken.allowance(
+        firstWallet.address,
+        vaultContract.address
+      );
+      console.log("balance: ", balance);
       expect(
         (
           await abcToken.allowance(firstWallet.address, vaultContract.address)
@@ -127,26 +135,26 @@ describe("Vault Test", () => {
 
   describe("Deposit and Withdraw ABC token to Vault contract", () => {
     it("Should deposit ABC token", async () => {
-      await vaultContract
+      let tx = await vaultContract
         .connect(firstWallet)
         .deposit(abcToken.address, "8000");
-      await delay(20000);
-      await vaultContract
+      await tx.wait();
+      tx = await vaultContract
         .connect(secondWallet)
         .deposit(abcToken.address, "10000");
-      await delay(20000);
-      await vaultContract
+      await tx.wait();
+      tx = await vaultContract
         .connect(thirdWallet)
         .deposit(abcToken.address, "40000");
-      await delay(20000);
-      await vaultContract
+      await tx.wait();
+      tx = await vaultContract
         .connect(fourthWallet)
         .deposit(abcToken.address, "30000");
-      await delay(20000);
-      await vaultContract
+      await tx.wait();
+      tx = await vaultContract
         .connect(fourthWallet)
         .withdraw(abcToken.address, "15000");
-      await delay(20000);
+      await tx.wait();
     });
   });
 
