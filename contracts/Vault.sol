@@ -36,7 +36,7 @@ contract Vault is Ownable, ReentrancyGuard {
     );
 
     constructor() {
-        for (uint256 i = 0;  i < 3; i++) {
+        for (uint256 i = 0;  i < 2; i++) {
             topFunders.push(Funder({
                 wallet: address(0x0),
                 amount: 0
@@ -78,18 +78,13 @@ contract Vault is Ownable, ReentrancyGuard {
             }));
             ids[msg.sender] = userInfos.length;
         }
-        if (topFunders[2].amount <= userInfos[ids[msg.sender].sub(1)].stakingAmount) {
-            if (topFunders[1].amount <= userInfos[ids[msg.sender].sub(1)].stakingAmount) {
-                if (topFunders[0].amount <= userInfos[ids[msg.sender].sub(1)].stakingAmount) {
-                    topFunders[0].amount = userInfos[ids[msg.sender].sub(1)].stakingAmount;
-                    topFunders[0].wallet = msg.sender;
-                } else {
-                    topFunders[1].amount = userInfos[ids[msg.sender].sub(1)].stakingAmount;
-                    topFunders[1].wallet = msg.sender;
-                }
+        if (topFunders[1].amount <= userInfos[ids[msg.sender].sub(1)].stakingAmount) {
+            if (topFunders[0].amount <= userInfos[ids[msg.sender].sub(1)].stakingAmount) {
+                topFunders[0].amount = userInfos[ids[msg.sender].sub(1)].stakingAmount;
+                topFunders[0].wallet = msg.sender;
             } else {
-                topFunders[2].amount = userInfos[ids[msg.sender].sub(1)].stakingAmount;
-                topFunders[2].wallet = msg.sender;
+                topFunders[1].amount = userInfos[ids[msg.sender].sub(1)].stakingAmount;
+                topFunders[1].wallet = msg.sender;
             }
         }
         IERC20(token).transferFrom(msg.sender, address(this), amount);
@@ -108,10 +103,7 @@ contract Vault is Ownable, ReentrancyGuard {
         if (msg.sender == topFunders[1].wallet) {
             topFunders[1].amount = userInfos[ids[msg.sender].sub(1)].stakingAmount;
         }
-        if (msg.sender == topFunders[2].wallet) {
-            topFunders[2].amount = userInfos[ids[msg.sender].sub(1)].stakingAmount;
-        }
-        quickSort(topFunders, 0, 2);
+        quickSort(topFunders, 0, 1);
         IERC20(token).transfer(msg.sender, amount);
         emit Withdraw(msg.sender, token, amount);
     }
