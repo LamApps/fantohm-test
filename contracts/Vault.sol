@@ -50,8 +50,8 @@ contract Vault is Ownable, ReentrancyGuard {
         if (i == j) return;
         Funder memory pivot = arr[uint(left + (right - left) / 2)];
         while (i <= j) {
-            while (arr[uint(i)].amount < pivot.amount) i++;
-            while (pivot.amount < arr[uint(j)].amount) j--;
+            while (arr[uint(i)].amount > pivot.amount) i++;
+            while (pivot.amount > arr[uint(j)].amount) j--;
             if (i <= j) {
                 (arr[uint(i)], arr[uint(j)]) = (arr[uint(j)], arr[uint(i)]);
                 i++;
